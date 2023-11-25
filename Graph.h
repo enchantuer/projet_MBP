@@ -40,6 +40,9 @@ public:
     // DFS
     vector<int> DFSMain(int from=0, bool returnPost=true, bool connected=false);
     void DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &pre, vector<int> &post);
+    // Constructive heuristic
+    vector<vector<int>> constructiveHeuristic();
+    int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
 };
 
 
