@@ -39,6 +39,22 @@ int main() {
         cout << v << " ";
     }
     cout << endl;
+    // Test constructive heuristic
+    Graph g3(10, 0.3);
+    cout << "Graph 3 (n=10, d=0.3)" << endl;
+    cout << "Number of edges : " << g3.getM() << endl;
+    vector<vector<int>> result = g3.constructiveHeuristic();
+    cout << "Group 1 : ";
+    for (auto v : result[0]){
+        cout << v << " ";
+    }
+    cout << endl;
+    cout << "Group 2 : ";
+    for (auto v : result[1]){
+        cout << v << " ";
+    }
+    cout << endl;
+    cout << "Number of edges linking the two groups : " << g3.getNumberOfEdgesLinkingTwoGroups(result[0], result[1]) << endl;
 
     return 0;
 }
