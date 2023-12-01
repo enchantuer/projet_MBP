@@ -44,6 +44,7 @@ vector<int> Graph::BFSMain(int from, bool connected) {
     }
     return postPre;
 }
+
 #if defined(ADJ_LIST) && !defined(ADJ_MATRIX)
 void Graph::BFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &postPre) {
     colors[v] = 1;
@@ -64,6 +65,7 @@ void Graph::BFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<in
     }
 }
 #endif
+
 vector<int> Graph::DFSMain(int from, bool returnPost, bool connected) {
     /* 0 -> Undiscovered
  * 1 -> Discovered
@@ -91,6 +93,7 @@ vector<int> Graph::DFSMain(int from, bool returnPost, bool connected) {
         return pre;
     }
 }
+
 #if defined(ADJ_LIST) && !defined(ADJ_MATRIX)
 void Graph::DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &pre, vector<int> &post) {
     stack<int> s;
@@ -116,9 +119,11 @@ void Graph::DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<in
     }
 }
 #endif
+
 #if defined(ADJ_LIST) && !defined(ADJ_MATRIX)
 Graph::Graph(int n) : n(n), m(0), successor(n), predecessor(n) {}
 #endif
+
 Graph::Graph(int n, double d) : Graph(n) {
     for(int i=0; i<n-1; i++){
         for(int j=i+1; j<n; j++){
@@ -128,6 +133,7 @@ Graph::Graph(int n, double d) : Graph(n) {
         }
     }
 }
+
 // Getters
 int Graph::getN() const {
     return n;
