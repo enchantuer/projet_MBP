@@ -56,5 +56,23 @@ int main() {
     cout << endl;
     cout << "Number of edges linking the two groups : " << g3.getNumberOfEdgesLinkingTwoGroups(result[0], result[1]) << endl;
 
+    // Test exact algorithm
+    Graph g4(10, 0.3);
+    cout << "Graph 4 (n=10, d=0.3)" << endl;
+    cout << "Number of edges : " << g4.getM() << endl;
+    vector<vector<int>> temp(2);
+    vector<vector<int>> result2 = g4.exactAlgorithm();
+    cout << "Group 1 : ";
+    for (auto v : result2[0]){
+        cout << v << " ";
+    }
+    cout << endl;
+    cout << "Group 2 : ";
+    for (auto v : result2[1]){
+        cout << v << " ";
+    }
+    cout << endl;
+    cout << "Number of edges linking the two groups : " << g4.getNumberOfEdgesLinkingTwoGroups(result2[0], result2[1]) << endl;
+
     return 0;
 }
