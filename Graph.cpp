@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#include <algorithm>
+
 void Graph::addVertex() {
     n++;
 }
@@ -140,4 +142,71 @@ int Graph::getN() const {
 }
 int Graph::getM() const {
     return m;
+}
+
+vector<vector<int>> Graph::constructiveHeuristic() {
+    vector<vector<int>> result(2);
+
+    vector<int> post = DFSMain(0, true, false);
+    for(int i = 0; i < post.size(); i++) {
+        if(i < n/2) {
+            result[0].push_back(post[i]);
+        } else {
+            result[1].push_back(post[i]);
+        }
+    }
+    return result;
+}
+
+int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2) {
+    int result = 0;
+    for (auto v : group1) {
+        for (auto u : group2) {
+            if ((find(successor[v].begin(), successor[v].end(),u) != successor[v].end()) ||(find(successor[u].begin(), successor[u].end(),v) != successor[u].end())) {
+                result++;
+            }
+        }
+    }
+    return result;
+}
+
+vector<vector<int>> Graph::exactAlgorithm(){
+    int min = this->m;
+    vector<int> A;
+    vector<int> B;
+    A.push_back(0);
+    exactAlgorithmVisit(min, A, B, 1);
+    vector<vector<int>> result(2);
+    result[0] = A;
+    result[1] = B;
+    return result;
+}
+void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i){
+    vector<int> Ab = A;
+    vector<int> Bb = B;
+    if(i==n){
+        min = getNumberOfEdgesLinkingTwoGroups(A,B);
+        cout << "A: ";
+        for(int j : Ab){
+            cout<<j<<" ";
+        }
+        cout << "- B: ";
+        for(int j : Bb){
+            cout<<j<<" ";
+        }
+        cout << endl;
+    }else{
+        if(Ab.size()<this->n/2){
+            Ab.push_back(i);
+            if(min>=getNumberOfEdgesLinkingTwoGroups(Ab,B)){
+                exactAlgorithmVisit(min,Ab,B,i+1);
+            }
+        }
+        if(Bb.size()<this->n/2){
+            Bb.push_back(i);
+            if(min>=getNumberOfEdgesLinkingTwoGroups(A,Bb)){
+                exactAlgorithmVisit(min,A,Bb,i+1);
+            }
+        }
+    }
 }
