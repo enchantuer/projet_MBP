@@ -43,6 +43,9 @@ public:
     // Constructive heuristic
     vector<vector<int>> constructiveHeuristic();
     int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
+    //Full
+    void Full();
+    void FullVisit(int &min, vector<int> &A, vector<int> &B, int i);
 };
 
 
