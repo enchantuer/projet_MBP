@@ -188,13 +188,13 @@ void Graph::FullVisit(int &min, vector<int> &A, vector<int> &B, int i){
     }else{
         if(Ab.size()<this->n/2){
             Ab.push_back(i);
-            if(min>getNumberOfEdgesLinkingTwoGroups(Ab,B)){
+            if(min>=getNumberOfEdgesLinkingTwoGroups(Ab,B)){
                 FullVisit(min,Ab,B,i+1);
             }
         }
         if(Bb.size()<this->n/2){
             Bb.push_back(i);
-            if(min>getNumberOfEdgesLinkingTwoGroups(A,Bb)){
+            if(min>=getNumberOfEdgesLinkingTwoGroups(A,Bb)){
                 FullVisit(min,A,Bb,i+1);
             }
         }
