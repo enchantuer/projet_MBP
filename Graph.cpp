@@ -171,41 +171,41 @@ int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &gr
 }
 
 vector<vector<int>> Graph::exactAlgorithm(){
-    int min = this->m;
+    int min = this->m+1;
     vector<int> A;
     vector<int> B;
     A.push_back(0);
-    exactAlgorithmVisit(min, A, B, 1);
     vector<vector<int>> result(2);
-    result[0] = A;
-    result[1] = B;
+    exactAlgorithmVisit(min, A, B, 1, result);
     return result;
 }
-void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i){
+void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result){
     vector<int> Ab = A;
     vector<int> Bb = B;
     if(i==n){
         min = getNumberOfEdgesLinkingTwoGroups(A,B);
-        cout << "A: ";
-        for(int j : Ab){
-            cout<<j<<" ";
-        }
-        cout << "- B: ";
-        for(int j : Bb){
-            cout<<j<<" ";
-        }
-        cout << endl;
+        result[0] = A;
+        result[1] = B;
+//        cout << "A: ";
+//        for(int j : Ab){
+//            cout<<j<<" ";
+//        }
+//        cout << "- B: ";
+//        for(int j : Bb){
+//            cout<<j<<" ";
+//        }
+//        cout << endl;
     }else{
         if(Ab.size()<this->n/2){
             Ab.push_back(i);
-            if(min>=getNumberOfEdgesLinkingTwoGroups(Ab,B)){
-                exactAlgorithmVisit(min,Ab,B,i+1);
+            if(min>getNumberOfEdgesLinkingTwoGroups(Ab,B)){
+                exactAlgorithmVisit(min,Ab,B,i+1, result);
             }
         }
         if(Bb.size()<this->n/2){
             Bb.push_back(i);
-            if(min>=getNumberOfEdgesLinkingTwoGroups(A,Bb)){
-                exactAlgorithmVisit(min,A,Bb,i+1);
+            if(min>getNumberOfEdgesLinkingTwoGroups(A,Bb)){
+                exactAlgorithmVisit(min,A,Bb,i+1, result);
             }
         }
     }

@@ -45,7 +45,7 @@ public:
     int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
     //Full
     vector<vector<int>> exactAlgorithm();
-    void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i);
+    void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result);
 };
 
 
