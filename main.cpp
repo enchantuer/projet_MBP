@@ -1,7 +1,4 @@
 #include "Graph.h"
-#include <fstream>
-#include <chrono>
-using namespace std::chrono;
 
 int main() {
     // Set rand seed
@@ -27,6 +24,7 @@ int main() {
     }
     cout << endl;
     // Graph 2 (random)
+    cout << endl << "Random graph" << endl;
     Graph g2(10, 0.25);
     cout << "Graph 2 (n=5, d=0.3)" << endl;
     cout << "Number of edges : " << g2.getM() << endl;
@@ -42,7 +40,9 @@ int main() {
         cout << v << " ";
     }
     cout << endl;
+
     // Test constructive heuristic
+    cout << endl << "Constructive heuristic" << endl;
     Graph g3(10, 0.3);
     cout << "Graph 3 (n=10, d=0.3)" << endl;
     cout << "Number of edges : " << g3.getM() << endl;
@@ -60,10 +60,10 @@ int main() {
     cout << "Number of edges linking the two groups : " << g3.getNumberOfEdgesLinkingTwoGroups(result[0], result[1]) << endl;
 
     // Test exact algorithm
+    cout << endl << "Exact algorithm" << endl;
     Graph g4(10, 0.3);
     cout << "Graph 4 (n=10, d=0.3)" << endl;
     cout << "Number of edges : " << g4.getM() << endl;
-    vector<vector<int>> temp(2);
     vector<vector<int>> result2 = g4.exactAlgorithm();
     cout << "Group 1 : ";
     for (auto v : result2[0]){
