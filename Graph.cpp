@@ -171,7 +171,20 @@ int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &gr
 }
 
 vector<vector<int>> Graph::exactAlgorithm(){
-    int min = this->m+1;
+    vector<int> Am;
+    vector<int> Bm;
+    if(this->n%2!=0){
+        cout << "error: there is not odd vertices" << endl;
+        return {Am,Bm};
+    }
+    for(int i=0; i<n; i++){
+        if(i%2==0){
+            Am.push_back(i);
+        }else{
+            Bm.push_back(i);
+        }
+    }
+    int min = getNumberOfEdgesLinkingTwoGroups(Am,Bm);
     vector<int> A;
     vector<int> B;
     A.push_back(0);
@@ -186,15 +199,6 @@ void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i,
         min = getNumberOfEdgesLinkingTwoGroups(A,B);
         result[0] = A;
         result[1] = B;
-//        cout << "A: ";
-//        for(int j : Ab){
-//            cout<<j<<" ";
-//        }
-//        cout << "- B: ";
-//        for(int j : Bb){
-//            cout<<j<<" ";
-//        }
-//        cout << endl;
     }else{
         if(Ab.size()<this->n/2){
             Ab.push_back(i);

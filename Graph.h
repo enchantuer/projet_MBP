@@ -5,7 +5,7 @@
 //#define ADJ_MATRIX
 
 #include <iostream>
-#include <vector>
+#include <utility>
 #include <string>
 #include <queue>
 #include <stack>
@@ -43,7 +43,7 @@ public:
     // Constructive heuristic
     vector<vector<int>> constructiveHeuristic();
     int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
-    //Full
+    //Exact
     vector<vector<int>> exactAlgorithm();
     void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result);
 };

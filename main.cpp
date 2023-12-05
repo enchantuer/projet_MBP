@@ -1,4 +1,7 @@
 #include "Graph.h"
+#include <fstream>
+#include <chrono>
+using namespace std::chrono;
 
 int main() {
     // Set rand seed
@@ -73,6 +76,47 @@ int main() {
     }
     cout << endl;
     cout << "Number of edges linking the two groups : " << g4.getNumberOfEdgesLinkingTwoGroups(result2[0], result2[1]) << endl;
+
+
+    // TEST DES ALGOS //
+    int i = 2;
+    int n = 25;
+
+    // Create graphs
+    vector<Graph> Vg;
+    for(int j=i; j<n; j+=2){
+        Graph g(j,0.35);
+        Vg.push_back(g);
+    }
+
+    // Run the algos
+    int k=0;
+    vector<pair<int,int>> Exact_Time;
+    for(int j=i; j<n; j+=2){
+        Graph g = Vg[k];
+        k++;
+        // Exact algo
+        pair<int,int> n_time;
+        cout << "Exact Algorithm :" << endl;
+        auto start = high_resolution_clock::now();
+        vector<vector<int>> result = g.exactAlgorithm();
+        auto stop = high_resolution_clock::now();
+        int duration = duration_cast<microseconds>(stop - start).count();
+        cout << "n: " << g.getN() << " - nb of edges: " << g.getNumberOfEdgesLinkingTwoGroups(result[0], result[1]) << endl;
+        cout << "time: " << duration << endl << endl;
+        n_time.first = g.getN();
+        n_time.second = duration;
+        Exact_Time.push_back(n_time);
+    }
+
+    // Write in a file csv
+    ofstream file;
+    file.open("exact.csv");
+    k=0;
+    for(int j=i; j<n; j+=2){
+        file << Exact_Time[k].first << ";" << Exact_Time[k].second << endl;
+        k++;
+    }
 
     return 0;
 }
