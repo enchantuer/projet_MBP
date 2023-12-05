@@ -1,4 +1,7 @@
 #include "Graph.h"
+#include <fstream>
+#include <chrono>
+using namespace std::chrono;
 
 int main() {
     // Set rand seed
