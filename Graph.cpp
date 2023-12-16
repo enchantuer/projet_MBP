@@ -146,16 +146,76 @@ int Graph::getM() const {
 
 vector<vector<int>> Graph::constructiveHeuristic() {
     vector<vector<int>> result(2);
-
-    vector<int> post = DFSMain(0, true, false);
-    for(int i = 0; i < post.size(); i++) {
-        if(i < n/2) {
-            result[0].push_back(post[i]);
-        } else {
-            result[1].push_back(post[i]);
+    vector<pair<int, int>> degrees(n);
+    vector<bool> used(n);
+    for(int i = 0; i < n; i++) {
+        degrees.emplace_back(getDegree(i), i);
+        used[i] = false;
+    }
+    sort(degrees.rbegin(), degrees.rend());
+    for(int i = 0; i < n; i++) {
+        if(!used[degrees[i].second]) {
+            vector<int> g = {degrees[i].second};
+            int edges0 = getNumberOfEdgesLinkingTwoGroups(result[0], g);
+            int edges1 = getNumberOfEdgesLinkingTwoGroups(result[1], g);
+            if (result[1].size() >= n/2) {
+                result[0].push_back(i);
+            }
+            else if (result[0].size() < n/2) {
+                if (edges0 <= edges1) {
+                    result[0].push_back(degrees[i].second);
+                    int count = 0;
+                    int deg = degrees[i].first;
+                    int j = n-1;
+                    while (j > i && count < deg/2+1) {
+                        if (result[1].size() < n/2) {
+                            if (!isEdge(degrees[i].second, degrees[j].second)) {
+                                result[1].push_back(degrees[j].second);
+                                count ++;
+                                used[degrees[j].second] = true;
+                            }
+                        }
+                        j --;
+                    }
+                } else {
+                    result[1].push_back(degrees[i].second);
+                    int count = 0;
+                    int deg = degrees[i].first;
+                    int j = n-1;
+                    while (j > i && count < deg/2+1) {
+                        if (result[0].size() < n/2) {
+                            if (!isEdge(degrees[i].second, degrees[j].second)) {
+                                result[0].push_back(degrees[j].second);
+                                count ++;
+                                used[degrees[j].second] = true;
+                            }
+                        }
+                        j --;
+                    }
+                }
+            } else {
+                result[1].push_back(degrees[i].second);
+            }
+            used[degrees[i].second] = true;
         }
     }
     return result;
+}
+int Graph::getDegree(int v) {
+    return successor[v].size() + predecessor[v].size();
+}
+bool Graph::isEdge(int v, int w) {
+    for (int i = 0; i<successor[v].size(); i++) {
+        if (successor[v][i]==w) {
+            return true;
+        }
+    }
+    for (int i = 0; i<predecessor[v].size(); i++) {
+        if (predecessor[v][i]==w) {
+            return true;
+        }
+    }
+    return false;
 }
 
 int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2) {

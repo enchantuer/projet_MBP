@@ -43,6 +43,8 @@ public:
     // Constructive heuristic
     vector<vector<int>> constructiveHeuristic();
     int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
+    int getDegree(int v);
+    bool isEdge(int v, int w);
     //Exact
     vector<vector<int>> exactAlgorithm();
     void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result);
