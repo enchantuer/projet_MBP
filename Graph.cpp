@@ -249,6 +249,8 @@ vector<vector<int>> Graph::exactAlgorithm(){
     vector<int> B;
     A.push_back(0);
     vector<vector<int>> result(2);
+    result[0]=Am;
+    result[1]=Bm;
     exactAlgorithmVisit(min, A, B, 1, result);
     return result;
 }
