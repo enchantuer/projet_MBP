@@ -135,6 +135,80 @@ Graph::Graph(int n, double d) : Graph(n) {
         }
     }
 }
+Graph::Graph(string instance){
+    ifstream inputFile(instance);
+    if (!inputFile.is_open()) {
+        return;
+    }
+    string line;
+    getline(inputFile, line);
+    istringstream iss(line);
+    int n, m;
+    iss >> n >> m;
+    this->n = n;
+    this->m = 0;
+    this->successor = vector<vector<int>>(n);
+    this->predecessor = vector<vector<int>>(n);
+
+    getline(inputFile, line);
+    istringstream iss2(line);
+    int u, v;
+    while (iss2 >> u >> v) {
+        addEdge(u,v);
+        iss2.ignore(2, ' ');
+    }
+    inputFile.close();
+
+    writeSolutions(instance);
+}
+void Graph::writeSolutions(string instance){
+    ofstream file;
+    string file_name = instance + "_exact.out";
+    file.open(file_name);
+    vector<vector<int>> result = exactAlgorithm();
+    int nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
+    file << this->n << " " << nbedges << endl;
+    for(int i=0; i<result[0].size(); i++){
+        file << result[0][i] << " ";
+    }
+    file << endl;
+    for(int i=0; i<result[1].size(); i++){
+        file << result[1][i] << " ";
+    }
+    file << endl;
+    file.close();
+
+    file_name = instance + "_constructive.out";
+    file.open(file_name);
+    result = constructiveHeuristic();
+    nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
+    file << this->n << " " << nbedges << endl;
+    for(int i=0; i<result[0].size(); i++){
+        file << result[0][i] << " ";
+    }
+    file << endl;
+    for(int i=0; i<result[1].size(); i++){
+        file << result[1][i] << " ";
+    }
+    file << endl;
+    file.close();
+
+    file_name = instance + "_local_search.out";
+    file.open(file_name);
+    result = localHeuristic();
+    nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
+    file << this->n << " " << nbedges << endl;
+    for(int i=0; i<result[0].size(); i++){
+        file << result[0][i] << " ";
+    }
+    file << endl;
+    for(int i=0; i<result[1].size(); i++){
+        file << result[1][i] << " ";
+    }
+    file << endl;
+    file.close();
+}
+
 
 // Getters
 int Graph::getN() const {
@@ -171,21 +245,6 @@ int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &gr
     }
     return result;
 }
-
-void readAndCreateGraph(string instance){
-    ifstream inputFile(instance);
-    int n, m;
-    inputFile >> n >> m;
-    Graph g(n);
-
-    vector<pair<int, int>> edges;
-    string line;
-    getline(inputFile, line); // Lire la fin de la première ligne
-    getline(inputFile, line);
-
-    inputFile.close();
-}
-
 
 // Exact //
 vector<vector<int>> Graph::exactAlgorithm(){
@@ -260,7 +319,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                     int deg = degrees[i].first;
                     int j = n-1;
                     while (j > i && count < deg/2+1) {
-                        if (result[1].size() < n/2) {
+                        if (result[1].size() < n/2  && !used[degrees[j].second]) {
                             if (!isEdge(degrees[i].second, degrees[j].second)) {
                                 result[1].push_back(degrees[j].second);
                                 count ++;
@@ -275,7 +334,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                     int deg = degrees[i].first;
                     int j = n-1;
                     while (j > i && count < deg/2+1) {
-                        if (result[0].size() < n/2) {
+                        if (result[0].size() < n/2 && !used[degrees[j].second]) {
                             if (!isEdge(degrees[i].second, degrees[j].second)) {
                                 result[0].push_back(degrees[j].second);
                                 count ++;
@@ -318,7 +377,6 @@ vector<vector<int>> Graph::localHeuristic(){
                     best = getNumberOfEdgesLinkingTwoGroups(result0, result1);
                     i = k ;
                     j = w ;
-                    cout << best << endl;
                 }
                 var = result0[k];
                 result0[k] = result1[w];

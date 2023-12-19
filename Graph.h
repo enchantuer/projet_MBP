@@ -10,6 +10,7 @@
 #include <queue>
 #include <stack>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -29,6 +30,8 @@ public:
     Graph(int n=0);
     // Random graph of density d
     Graph(int n, double d);
+    // With an instance
+    Graph(string instance);
     // Getters
     int getN() const;
     int getM() const;
@@ -42,7 +45,7 @@ public:
     vector<int> DFSMain(int from=0, bool returnPost=true, bool connected=false);
     void DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &pre, vector<int> &post);
 
-    void readAndCreateGraph(string instance);
+    void writeSolutions(string instance);
 
     //Exact
     vector<vector<int>> exactAlgorithm();
