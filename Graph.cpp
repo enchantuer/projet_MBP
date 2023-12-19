@@ -143,7 +143,99 @@ int Graph::getN() const {
 int Graph::getM() const {
     return m;
 }
+int Graph::getDegree(int v) {
+    return successor[v].size() + predecessor[v].size();
+}
+bool Graph::isEdge(int v, int w) {
+    for (int i = 0; i<successor[v].size(); i++) {
+        if (successor[v][i]==w) {
+            return true;
+        }
+    }
+    for (int i = 0; i<predecessor[v].size(); i++) {
+        if (predecessor[v][i]==w) {
+            return true;
+        }
+    }
+    return false;
+}
 
+int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2) {
+    int result = 0;
+    for (auto v : group1) {
+        for (auto u : group2) {
+            if ((find(successor[v].begin(), successor[v].end(),u) != successor[v].end()) ||(find(successor[u].begin(), successor[u].end(),v) != successor[u].end())) {
+                result++;
+            }
+        }
+    }
+    return result;
+}
+
+void readAndCreateGraph(string instance){
+    ifstream inputFile(instance);
+    int n, m;
+    inputFile >> n >> m;
+    Graph g(n);
+
+    vector<pair<int, int>> edges;
+    string line;
+    getline(inputFile, line); // Lire la fin de la première ligne
+    getline(inputFile, line);
+
+    inputFile.close();
+}
+
+
+// Exact //
+vector<vector<int>> Graph::exactAlgorithm(){
+    vector<int> Am;
+    vector<int> Bm;
+    if(this->n%2!=0){
+        cout << "error: there is not odd vertices" << endl;
+        return {Am,Bm};
+    }
+    for(int i=0; i<n; i++){
+        if(i%2==0){
+            Am.push_back(i);
+        }else{
+            Bm.push_back(i);
+        }
+    }
+    int min = getNumberOfEdgesLinkingTwoGroups(Am,Bm);
+    vector<int> A;
+    vector<int> B;
+    A.push_back(0);
+    vector<vector<int>> result(2);
+    result[0]=Am;
+    result[1]=Bm;
+    exactAlgorithmVisit(min, A, B, 1, result);
+    return result;
+}
+void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result){
+    vector<int> Ab = A;
+    vector<int> Bb = B;
+    if(i==n){
+        min = getNumberOfEdgesLinkingTwoGroups(A,B);
+        result[0] = A;
+        result[1] = B;
+    }else{
+        if(Ab.size()<this->n/2){
+            Ab.push_back(i);
+            if(min>getNumberOfEdgesLinkingTwoGroups(Ab,B)){
+                exactAlgorithmVisit(min,Ab,B,i+1, result);
+            }
+        }
+        if(Bb.size()<this->n/2){
+            Bb.push_back(i);
+            if(min>getNumberOfEdgesLinkingTwoGroups(A,Bb)){
+                exactAlgorithmVisit(min,A,Bb,i+1, result);
+            }
+        }
+    }
+}
+
+// Constructive //
 vector<vector<int>> Graph::constructiveHeuristic() {
     vector<vector<int>> result(2);
     vector<pair<int, int>> degrees(n);
@@ -201,83 +293,8 @@ vector<vector<int>> Graph::constructiveHeuristic() {
     }
     return result;
 }
-int Graph::getDegree(int v) {
-    return successor[v].size() + predecessor[v].size();
-}
-bool Graph::isEdge(int v, int w) {
-    for (int i = 0; i<successor[v].size(); i++) {
-        if (successor[v][i]==w) {
-            return true;
-        }
-    }
-    for (int i = 0; i<predecessor[v].size(); i++) {
-        if (predecessor[v][i]==w) {
-            return true;
-        }
-    }
-    return false;
-}
 
-int Graph::getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2) {
-    int result = 0;
-    for (auto v : group1) {
-        for (auto u : group2) {
-            if ((find(successor[v].begin(), successor[v].end(),u) != successor[v].end()) ||(find(successor[u].begin(), successor[u].end(),v) != successor[u].end())) {
-                result++;
-            }
-        }
-    }
-    return result;
-}
-
-vector<vector<int>> Graph::exactAlgorithm(){
-    vector<int> Am;
-    vector<int> Bm;
-    if(this->n%2!=0){
-        cout << "error: there is not odd vertices" << endl;
-        return {Am,Bm};
-    }
-    for(int i=0; i<n; i++){
-        if(i%2==0){
-            Am.push_back(i);
-        }else{
-            Bm.push_back(i);
-        }
-    }
-    int min = getNumberOfEdgesLinkingTwoGroups(Am,Bm);
-    vector<int> A;
-    vector<int> B;
-    A.push_back(0);
-    vector<vector<int>> result(2);
-    result[0]=Am;
-    result[1]=Bm;
-    exactAlgorithmVisit(min, A, B, 1, result);
-    return result;
-}
-void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result){
-    vector<int> Ab = A;
-    vector<int> Bb = B;
-    if(i==n){
-        min = getNumberOfEdgesLinkingTwoGroups(A,B);
-        result[0] = A;
-        result[1] = B;
-    }else{
-        if(Ab.size()<this->n/2){
-            Ab.push_back(i);
-            if(min>getNumberOfEdgesLinkingTwoGroups(Ab,B)){
-                exactAlgorithmVisit(min,Ab,B,i+1, result);
-            }
-        }
-        if(Bb.size()<this->n/2){
-            Bb.push_back(i);
-            if(min>getNumberOfEdgesLinkingTwoGroups(A,Bb)){
-                exactAlgorithmVisit(min,A,Bb,i+1, result);
-            }
-        }
-    }
-}
-
-
+// Local //
 vector<vector<int>> Graph::localHeuristic(){
     vector<vector<int>> result = constructiveHeuristic();
     vector<int> result0 = result[0];
@@ -289,7 +306,6 @@ vector<vector<int>> Graph::localHeuristic(){
     int best=-1;
     int NM1 = getNumberOfEdgesLinkingTwoGroups(result0, result1);
     bool lire = false;
-    cout << NM1 << endl;
     while(!lire){
 
         for(int k=0; k<result0.size(); k++){

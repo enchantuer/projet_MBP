@@ -9,6 +9,7 @@
 #include <string>
 #include <queue>
 #include <stack>
+#include <fstream>
 
 using namespace std;
 
@@ -40,17 +41,22 @@ public:
     // DFS
     vector<int> DFSMain(int from=0, bool returnPost=true, bool connected=false);
     void DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &pre, vector<int> &post);
+
+    void readAndCreateGraph(string instance);
+
+    //Exact
+    vector<vector<int>> exactAlgorithm();
+    void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result);
     // Constructive heuristic
     vector<vector<int>> constructiveHeuristic();
     int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
     int getDegree(int v);
     bool isEdge(int v, int w);
-    //Exact
-    vector<vector<int>> exactAlgorithm();
-    void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result);
 
-
+    // Local Search heuristic
     vector<vector<int>> localHeuristic();
+
+
 };
 
 

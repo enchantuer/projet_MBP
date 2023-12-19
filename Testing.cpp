@@ -1,6 +1,5 @@
 #include "Testing.h"
 #include <iomanip>
-#include <fstream>
 
 using namespace std::chrono;
 
@@ -59,10 +58,10 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
             auto start = high_resolution_clock::now();
             if(algo=="exact"){
                 result = Vg[k].exactAlgorithm();
-            }else if(algo=="cheuristic"){
+            }else if(algo=="constructive"){
                 result = Vg[k].constructiveHeuristic();
-            }else if(algo=="lheuristic"){
-                //result = Vg[k].exactAlgorithm();
+            }else if(algo=="local_search"){
+                result = Vg[k].localHeuristic();
             }else{
                 //result = Vg[k].exactAlgorithm();
             }
@@ -74,8 +73,8 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
             moytime = moytime + duration;
             moynbedge = moynbedge + nbedges;
         }
-        moytime = moytime/p.size();
-        moynbedge = moynbedge/p.size();
+        moytime = moytime/nb;
+        moynbedge = moynbedge/nb;
         cout << endl << "moytime: " << moytime << endl << "moynbedge : " << moynbedge << endl <<  "--------------------"  << endl;
         filetime << np.first << ";" << moytime << endl;
         filetime.close();
