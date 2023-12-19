@@ -8,5 +8,6 @@ vector<pair<pair<int,float>,vector<Graph>>> Create_Graphs(int n, vector<float> p
 
 void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<float> p , string algo, int nb);
 
+void Test_With_Instance(string instancepath, string algo);
 
 #endif //PROJETTEST_TESTING_H
