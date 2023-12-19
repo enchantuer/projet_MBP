@@ -48,6 +48,9 @@ public:
     //Exact
     vector<vector<int>> exactAlgorithm();
     void exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i, vector<vector<int>> &result);
+
+
+    void localHeuristic(vector<vector<int>> result);
 };
 
 

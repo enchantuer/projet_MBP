@@ -276,3 +276,37 @@ void Graph::exactAlgorithmVisit(int &min, vector<int> &A, vector<int> &B, int i,
         }
     }
 }
+
+
+void Graph::localHeuristic(vector<vector<int>> result){
+    vector<int> result0 = result[0];
+    vector<int> result1 = result[1];
+    cout <<"\nLocal Heuristic ok :\n";
+    int var,var2;
+    int i = 0;
+    int j = 0;
+
+    int best = getNumberOfEdgesLinkingTwoGroups(result0, result1);
+    cout << best << endl;
+
+    for(int k=0; k<result0.size(); k++){
+        for(int w = 0 ; w<result1.size(); w++){
+            var = result0[k];
+            result0[k] = result1[w];
+            result1[w] = var;
+
+            if(getNumberOfEdgesLinkingTwoGroups(result0, result1)< best){
+                best = getNumberOfEdgesLinkingTwoGroups(result0, result1);
+                i = k ;
+                j = w ;
+                cout << best << endl;
+            }
+            var = result0[k];
+            result0[k] = result1[w];
+            result1[w] = var;
+        }
+        var2 = result0[i];
+        result0[i] = result1[j];
+        result1[j] = var2;
+    }
+}
