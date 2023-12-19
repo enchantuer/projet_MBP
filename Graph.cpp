@@ -135,6 +135,30 @@ Graph::Graph(int n, double d) : Graph(n) {
         }
     }
 }
+Graph::Graph(string instance){
+    ifstream inputFile(instance);
+    if (!inputFile.is_open()) {
+        return;
+    }
+    string line;
+    getline(inputFile, line);
+    istringstream iss(line);
+    int n, m;
+    iss >> n >> m;
+    this->n = n;
+    this->m = 0;
+    this->successor = vector<vector<int>>(n);
+    this->predecessor = vector<vector<int>>(n);
+
+    getline(inputFile, line);
+    istringstream iss2(line);
+    int u, v;
+    while (iss2 >> u >> v) {
+        addEdge(u,v);
+        iss2.ignore(2, ' ');
+    }
+    inputFile.close();
+}
 
 
 void Graph::writeSolutions(string instancepath, string algo){
