@@ -1,6 +1,7 @@
 #include "Graph.h"
 
 #include <algorithm>
+#include <random>
 
 void Graph::addVertex() {
     n++;
@@ -362,3 +363,138 @@ vector<vector<int>> Graph::localHeuristic(){
     result[1]=result1;
     return result;
 }
+
+
+
+
+// Meta-heuristic //
+vector<vector<int>> Graph::generateRandomSolution() {
+    vector<int> randomOrdering(n);
+    for (int i = 0 ; i < n ; i++) {
+        randomOrdering[i] = i;
+    }
+    shuffle(randomOrdering.begin(), randomOrdering.end(), std::mt19937(std::random_device()()));
+
+    vector<int> group1, group2;
+    for (int i = 0 ; i < n ; i++){
+        if (i < n/2){
+            group1.push_back(randomOrdering[i]);
+        }
+        else{
+            group2.push_back(randomOrdering[i]);
+        }
+    }
+
+    return {group1, group2};
+}
+
+// LocalSearchTabu
+vector<vector<int>> Graph::localSearchTabu(vector<vector<int>> &solution, vector<pair<vector<int>, vector<int>>> &tabuList, bool &isTabu){
+    int count = 0;
+
+    vector<int> result0 = solution[0];
+    vector<int> result1 = solution[1];
+    int var,var2;
+    int i = 0;
+    int j = 0;
+
+    int best=-1;
+    int NM1 = getNumberOfEdgesLinkingTwoGroups(result0, result1);
+    bool lire = false;
+    while(!lire && !isTabu){
+
+        for(int k=0; k<result0.size(); k++){
+            for(int w = 0 ; w<result1.size(); w++){
+                var = result0[k];
+                result0[k] = result1[w];
+                result1[w] = var;
+
+                if(getNumberOfEdgesLinkingTwoGroups(result0, result1) < NM1){
+                    best = getNumberOfEdgesLinkingTwoGroups(result0, result1);
+                    i = k ;
+                    j = w ;
+                }
+                var = result0[k];
+                result0[k] = result1[w];
+                result1[w] = var;
+            }
+            if (best != -1){
+                var2 = result0[i];
+                result0[i] = result1[j];
+                result1[j] = var2;
+            }
+        }
+
+        if(NM1<best){
+            lire = false;
+        }
+        else{
+            lire = true;
+        }
+        count ++;
+/*        if (count > n/8){ // Check if the solution is in the tabu list every 5 iterations
+            sort(result0.begin(), result0.end());
+            // Check if the solution is in the tabu list
+            for (auto &solutionRange : tabuList){
+                if (solutionRange.first >= result0 && solutionRange.second <= result0){
+                    isTabu = true;
+                    break;
+                }
+            }
+            count = 0;
+        }*/
+    }
+    sort(result0.begin(), result0.end());
+    return {result0, result1};
+}
+
+
+vector<vector<int>> Graph::metaheuristic(int iter_max, int nb_fail_max){
+    vector<vector<int>> bestSolution = localHeuristic();
+    int bestCost = getNumberOfEdgesLinkingTwoGroups(bestSolution[0], bestSolution[1]);
+
+    // Tabu list for ban groups
+    vector<pair<vector<int>, vector<int>>> tabuList;
+
+    int iter = 0;
+    int nb_fail = 0;
+    while (iter < iter_max && nb_fail < nb_fail_max){
+        vector<vector<int>> randomSolution = generateRandomSolution();
+        int currentCost = getNumberOfEdgesLinkingTwoGroups(randomSolution[0], randomSolution[1]);
+
+        // Check if the solution is in the tabu list
+        bool isTabu = false;
+        for (auto &solutionRange : tabuList){
+            if (solutionRange.first >= randomSolution[0] && solutionRange.second <= randomSolution[0]){
+                isTabu = true;
+                break;
+            }
+        }
+
+        // Add the solution to the tabu list
+        if (!isTabu){
+            // Sort the solution
+            vector<vector<int>> optimised_random_solution = localSearchTabu(randomSolution, tabuList, isTabu);
+            // Add the solution to the tabu list
+            if (randomSolution[0] < optimised_random_solution[0]) {
+                tabuList.push_back({randomSolution[0], optimised_random_solution[0]});
+            } else {
+                tabuList.push_back({optimised_random_solution[0], randomSolution[0]});
+            }
+        }
+
+        if (!isTabu && currentCost < bestCost){
+            bestSolution = randomSolution;
+            bestCost = currentCost;
+            nb_fail = 0;
+        }
+        else{
+            nb_fail ++;
+        }
+
+    }
+
+    return bestSolution;
+}
+
+

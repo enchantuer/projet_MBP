@@ -60,6 +60,10 @@ public:
     vector<vector<int>> localHeuristic();
 
 
+    //Meta-heuristics
+    vector<vector<int>> generateRandomSolution();
+    vector<vector<int>> localSearchTabu(vector<vector<int>> &solution, vector<pair<vector<int>, vector<int>>> &tabuList, bool &isTabu);
+    vector<vector<int>> metaheuristic(int iter_max, int nbfail_max);
 };
 
 
