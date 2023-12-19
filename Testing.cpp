@@ -20,7 +20,7 @@ vector<pair<pair<int,float>,vector<Graph>>> Create_Graphs(int n, vector<float> p
     return VGs;
 }
 
-void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<float> p , string algo){
+void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<float> p , string algo, int nb){
     if(n%2==1){
         n--;
     }
@@ -53,14 +53,14 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
         filenbedge.open(file_nbedge,ios::app);
         int moytime = 0;
         int moynbedge = 0;
-        for(int k=0; k<Vg.size(); k++){
+        for(int k=0; k<nb; k++){
             cout << algo << " Algorithm :" << endl;
             vector<vector<int>> result;
             auto start = high_resolution_clock::now();
             if(algo=="exact"){
                 result = Vg[k].exactAlgorithm();
             }else if(algo=="cheuristic"){
-                //result = Vg[k].exactAlgorithm();
+                result = Vg[k].constructiveHeuristic();
             }else if(algo=="lheuristic"){
                 //result = Vg[k].exactAlgorithm();
             }else{
