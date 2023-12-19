@@ -135,37 +135,29 @@ Graph::Graph(int n, double d) : Graph(n) {
         }
     }
 }
-Graph::Graph(string instance){
-    ifstream inputFile(instance);
-    if (!inputFile.is_open()) {
-        return;
-    }
-    string line;
-    getline(inputFile, line);
-    istringstream iss(line);
-    int n, m;
-    iss >> n >> m;
-    this->n = n;
-    this->m = 0;
-    this->successor = vector<vector<int>>(n);
-    this->predecessor = vector<vector<int>>(n);
 
-    getline(inputFile, line);
-    istringstream iss2(line);
-    int u, v;
-    while (iss2 >> u >> v) {
-        addEdge(u,v);
-        iss2.ignore(2, ' ');
-    }
-    inputFile.close();
 
-    writeSolutions(instance);
-}
-void Graph::writeSolutions(string instance){
+void Graph::writeSolutions(string instancepath, string algo){
     ofstream file;
-    string file_name = instance + "_exact.out";
-    file.open(file_name);
-    vector<vector<int>> result = exactAlgorithm();
+    vector<vector<int>> result;
+    if(algo=="exact"){
+        string file_name = instancepath + "_exact.out";
+        file.open(file_name);
+        result = exactAlgorithm();
+    }else if(algo=="constructive"){
+        string file_name = instancepath + "_constructive.out";
+        file.open(file_name);
+        result = constructiveHeuristic();
+    }else if(algo=="exact"){
+        string file_name = instancepath + "_local_search.out";
+        file.open(file_name);
+        result = localHeuristic();
+    }else {
+        string file_name = instancepath + "_meta_search.out";
+        file.open(file_name);
+        result = localHeuristic();    //TODO  Mettre meta
+    }
+
     int nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
     file << this->n << " " << nbedges << endl;
     for(int i=0; i<result[0].size(); i++){
@@ -177,38 +169,6 @@ void Graph::writeSolutions(string instance){
     }
     file << endl;
     file.close();
-
-    file_name = instance + "_constructive.out";
-    file.open(file_name);
-    result = constructiveHeuristic();
-    nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
-    file << this->n << " " << nbedges << endl;
-    for(int i=0; i<result[0].size(); i++){
-        file << result[0][i] << " ";
-    }
-    file << endl;
-    for(int i=0; i<result[1].size(); i++){
-        file << result[1][i] << " ";
-    }
-    file << endl;
-    file.close();
-
-    file_name = instance + "_local_search.out";
-    file.open(file_name);
-    result = localHeuristic();
-    nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
-    file << this->n << " " << nbedges << endl;
-    for(int i=0; i<result[0].size(); i++){
-        file << result[0][i] << " ";
-    }
-    file << endl;
-    for(int i=0; i<result[1].size(); i++){
-        file << result[1][i] << " ";
-    }
-    file << endl;
-    file.close();
-
-    //TODO  Mettre meta
 }
 
 

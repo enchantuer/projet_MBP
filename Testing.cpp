@@ -63,7 +63,7 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
             }else if(algo=="local_search"){
                 result = Vg[k].localHeuristic();
             }else{
-                //result = Vg[k].exactAlgorithm();
+                //result = Vg[k].exactAlgorithm(); //TODO  Mettre meta
             }
             auto stop = high_resolution_clock::now();
             int duration = duration_cast<microseconds>(stop - start).count();
@@ -82,4 +82,28 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
         filenbedge.close();
         l++;
     }
+}
+
+void Test_With_Instance(string instancepath,string algo){
+    ifstream inputFile(instancepath);
+    if (!inputFile.is_open()) {
+        return;
+    }
+    string line;
+    getline(inputFile, line);
+    istringstream iss(line);
+    int n, m;
+    iss >> n >> m;
+    Graph g(n);
+
+    getline(inputFile, line);
+    istringstream iss2(line);
+    int u, v;
+    while (iss2 >> u >> v) {
+        g.addEdge(u,v);
+        iss2.ignore(2, ' ');
+    }
+    inputFile.close();
+
+    g.writeSolutions(instancepath,algo);
 }

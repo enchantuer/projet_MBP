@@ -45,7 +45,7 @@ public:
     vector<int> DFSMain(int from=0, bool returnPost=true, bool connected=false);
     void DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &pre, vector<int> &post);
 
-    void writeSolutions(string instance);
+    void writeSolutions(string instancepath, string algo);
 
     //Exact
     vector<vector<int>> exactAlgorithm();
