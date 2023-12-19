@@ -15,7 +15,7 @@ int main() {
     //Run_Algos(VGs,18,p,"constructive",30);
     //Run_Algos(VGs,18,p,"local_search",30);
 
-    Test_With_Instance("../test/test2.in", "exact");
+    //Test_With_Instance("../instances/test1.in", "exact");
 
     return 0;
 }
