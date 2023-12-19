@@ -207,6 +207,8 @@ void Graph::writeSolutions(string instance){
     }
     file << endl;
     file.close();
+
+    //TODO  Mettre meta
 }
 
 
