@@ -384,9 +384,11 @@ vector<vector<int>> Graph::localHeuristic(){
                 result0[k] = result1[w];
                 result1[w] = var;
             }
-            var2 = result0[i];
-            result0[i] = result1[j];
-            result1[j] = var2;
+            if (best != -1){
+                var2 = result0[i];
+                result0[i] = result1[j];
+                result1[j] = var2;
+            }
         }
 
         if(NM1<best){
