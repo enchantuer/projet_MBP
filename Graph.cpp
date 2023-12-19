@@ -312,7 +312,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
             int edges0 = getNumberOfEdgesLinkingTwoGroups(result[0], g);
             int edges1 = getNumberOfEdgesLinkingTwoGroups(result[1], g);
             if (result[1].size() >= n/2) {
-                result[0].push_back(i);
+                result[0].push_back(degrees[i].second);
             }
             else if (result[0].size() < n/2) {
                 if (edges0 <= edges1) {
