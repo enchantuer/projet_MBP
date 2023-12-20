@@ -1,4 +1,18 @@
 # projet_MBP
+
+## How to compile
+
+## How to execute
+
+## Where to find the executable
+
+## Where to put the inputs files
+
+## Where to find the outputs files
+
+## How to use the program
+
+
 Algorithm Project for school. Minimum Bisection Problem
 
 This project is a school project for the Graph courses.

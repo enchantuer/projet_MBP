@@ -12,12 +12,11 @@
 using namespace std;
 
 class Graph {
-private:
+public:
     vector<vector<int>> successor;
     vector<vector<int>> predecessor;
     int n;
     int m;
-public:
     // Constructor
     Graph(int n=0);
     // Random graph of density d
@@ -30,12 +29,6 @@ public:
     // Add vertex and edge
     void addVertex();
     void addEdge(int v, int u, bool isDirected=true);
-    // BFS
-    vector<int> BFSMain(int from=0, bool connected=false);
-    void BFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &postPre);
-    // DFS
-    vector<int> DFSMain(int from=0, bool returnPost=true, bool connected=false);
-    void DFSVisit(int v, vector<int> &colors, vector<int> &parents, vector<int> &pre, vector<int> &post);
 
     void writeSolutions(string instancepath, string algo);
 
