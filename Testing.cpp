@@ -1,7 +1,6 @@
 #include "Testing.h"
 #include <iomanip>
 
-using namespace std::chrono;
 
 vector<pair<pair<int,float>,vector<Graph>>> Create_Graphs(int n, vector<float> p, int nb){
     vector<pair<pair<int,float>,vector<Graph>>> VGs;
@@ -61,9 +60,10 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
             }else if(algo=="constructive"){
                 result = Vg[k].constructiveHeuristic();
             }else if(algo=="local_search"){
-                result = Vg[k].localHeuristic();
+                result = Vg[k].constructiveHeuristic();
+                result = Vg[k].localHeuristic(result);
             }else{
-                //result = Vg[k].exactAlgorithm(); //TODO  Mettre meta
+                result = Vg[k].metaheuristic(500,200);
             }
             auto stop = high_resolution_clock::now();
             int duration = duration_cast<microseconds>(stop - start).count();
