@@ -1,9 +1,6 @@
 #ifndef PROJET_MBP_GRAPH_H
 #define PROJET_MBP_GRAPH_H
 
-#define ADJ_LIST
-//#define ADJ_MATRIX
-
 #include <iostream>
 #include <utility>
 #include <string>
@@ -16,13 +13,8 @@ using namespace std;
 
 class Graph {
 private:
-#ifdef ADJ_LIST
     vector<vector<int>> successor;
     vector<vector<int>> predecessor;
-#endif
-#ifdef ADJ_MATRIX
-    vector<vector<int>> matrix;
-#endif
     int n;
     int m;
 public:
