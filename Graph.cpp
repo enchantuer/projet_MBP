@@ -193,7 +193,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                 result[0].push_back(degrees[i].second);
             }
             else {
-                if (edges0 >= edges1) {
+                if (edges0 >= edges1 && result[0].size() < n/2) {
                     result[0].push_back(degrees[i].second);
                     int count = 0;
                     int deg = degrees[i].first;
