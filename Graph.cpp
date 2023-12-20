@@ -296,10 +296,10 @@ vector<vector<int>> Graph::constructiveHeuristic() {
             vector<int> g = {degrees[i].second};
             int edges0 = getNumberOfEdgesLinkingTwoGroups(result[0], g);
             int edges1 = getNumberOfEdgesLinkingTwoGroups(result[1], g);
-            if (result[1].size() >= n/2) {
+            if (result[1].size() == n/2) {
                 result[0].push_back(degrees[i].second);
             }
-            else if (result[0].size() < n/2) {
+            else {
                 if (edges0 <= edges1) {
                     result[0].push_back(degrees[i].second);
                     int count = 0;
@@ -331,8 +331,6 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                         j --;
                     }
                 }
-            } else {
-                result[1].push_back(degrees[i].second);
             }
             used[degrees[i].second] = true;
         }
@@ -505,6 +503,8 @@ vector<vector<int>> Graph::metaheuristic(int iter_max, int nb_fail_max){
             } else {
                 tabuList.push_back({optimised_random_solution[0], randomSolution[0]});
             }
+            randomSolution = optimised_random_solution;
+            currentCost = getNumberOfEdgesLinkingTwoGroups(randomSolution[0], randomSolution[1]);
         }
 
         if (!isTabu && currentCost < bestCost){
