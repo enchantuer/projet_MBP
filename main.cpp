@@ -8,14 +8,14 @@ int main() {
     // Run the algos
     int n = 150;     // max size
     vector<float> p = {0.25,0.5,0.75};   // density
-    int nb = 50;     // number of test for each n-size Graph of density p
+    int nb = 10;     // number of test for each n-size Graph of density p
 
     vector<pair<pair<int,float>,vector<Graph>>> VGs = Create_Graphs(n,p,nb);
 
-    //Run_Algos(VGs,26,p,"constructive",50);
-    //Run_Algos(VGs,26,p,"local_search",50);
-    //Run_Algos(VGs,26,p,"tabu_search",5);
-    //Run_Algos(VGs,28,p,"exact",2);
+    Run_Algos(VGs,18,p,"constructive",5);
+    Run_Algos(VGs,18,p,"local_search",5);
+    Run_Algos(VGs,18,p,"tabu_search",5);
+    Run_Algos(VGs,18,p,"exact",5);
 
     //Test_With_Instance("../instances/test1.in", "exact");
 
