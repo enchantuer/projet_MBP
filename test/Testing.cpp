@@ -83,6 +83,9 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> &VGs, int n, vector<f
 }
 
 void writeSolutions(Graph &G, string instancepath, string algo){
+    instancepath.pop_back();
+    instancepath.pop_back();
+    instancepath.pop_back();
     ofstream file;
     vector<vector<int>> result;
     if(algo=="exact"){
@@ -99,7 +102,7 @@ void writeSolutions(Graph &G, string instancepath, string algo){
         result = constructiveHeuristic(G);
         result = localHeuristic(G, result);
     }else {
-        string file_name = instancepath + "_meta_search.out";
+        string file_name = instancepath + "_tabu_search.out";
         file.open(file_name);
         result = metaheuristic(G, 100, 20);
     }
@@ -118,6 +121,7 @@ void writeSolutions(Graph &G, string instancepath, string algo){
 }
 
 void Test_With_Instance(string instancepath,string algo){
+    instancepath = "../instances/" + algo + "/" + instancepath;
     ifstream inputFile(instancepath);
     if (!inputFile.is_open()) {
         return;
