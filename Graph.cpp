@@ -305,7 +305,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                     int count = 0;
                     int deg = degrees[i].first;
                     int j = n-1;
-                    while (j > i && count < deg/2+1) {
+                    while (j > i && count < deg/2) {
                         if (result[1].size() < n/2  && !used[degrees[j].second]) {
                             if (!isEdge(degrees[i].second, degrees[j].second)) {
                                 result[1].push_back(degrees[j].second);
@@ -320,7 +320,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                     int count = 0;
                     int deg = degrees[i].first;
                     int j = n-1;
-                    while (j > i && count < deg/2+1) {
+                    while (j > i && count < deg/2) {
                         if (result[0].size() < n/2 && !used[degrees[j].second]) {
                             if (!isEdge(degrees[i].second, degrees[j].second)) {
                                 result[0].push_back(degrees[j].second);
