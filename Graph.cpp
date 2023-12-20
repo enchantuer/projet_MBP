@@ -176,11 +176,12 @@ void Graph::writeSolutions(string instancepath, string algo){
     }else if(algo=="exact"){
         string file_name = instancepath + "_local_search.out";
         file.open(file_name);
-        result = localHeuristic();
+        result = constructiveHeuristic();
+        result = localHeuristic(result);
     }else {
         string file_name = instancepath + "_meta_search.out";
         file.open(file_name);
-        result = localHeuristic();    //TODO  Mettre meta
+        result = metaheuristic(500, 200);    //TODO  Mettre meta
     }
 
     int nbedges = getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
@@ -300,7 +301,7 @@ vector<vector<int>> Graph::constructiveHeuristic() {
                 result[0].push_back(degrees[i].second);
             }
             else {
-                if (edges0 <= edges1) {
+                if (edges0 >= edges1) {
                     result[0].push_back(degrees[i].second);
                     int count = 0;
                     int deg = degrees[i].first;
@@ -339,10 +340,9 @@ vector<vector<int>> Graph::constructiveHeuristic() {
 }
 
 // Local //
-vector<vector<int>> Graph::localHeuristic(){
-    vector<vector<int>> result = constructiveHeuristic();
-    vector<int> result0 = result[0];
-    vector<int> result1 = result[1];
+vector<vector<int>> Graph::localHeuristic(vector<vector<int>> &solution){;
+    vector<int> result0 = solution[0];
+    vector<int> result1 = solution[1];
     int var,var2;
     int i = 0;
     int j = 0;
@@ -374,16 +374,11 @@ vector<vector<int>> Graph::localHeuristic(){
             }
         }
 
-        if(NM1<best){
-            lire = false;
-        }
-        else{
+        if(NM1>best){
             lire = true;
         }
     }
-    result[0]=result0;
-    result[1]=result1;
-    return result;
+    return {result0, result1};
 }
 
 
@@ -410,69 +405,10 @@ vector<vector<int>> Graph::generateRandomSolution() {
     return {group1, group2};
 }
 
-// LocalSearchTabu
-vector<vector<int>> Graph::localSearchTabu(vector<vector<int>> &solution, vector<pair<vector<int>, vector<int>>> &tabuList, bool &isTabu){
-    int count = 0;
-
-    vector<int> result0 = solution[0];
-    vector<int> result1 = solution[1];
-    int var,var2;
-    int i = 0;
-    int j = 0;
-
-    int best=-1;
-    int NM1 = getNumberOfEdgesLinkingTwoGroups(result0, result1);
-    bool lire = false;
-    while(!lire && !isTabu){
-
-        for(int k=0; k<result0.size(); k++){
-            for(int w = 0 ; w<result1.size(); w++){
-                var = result0[k];
-                result0[k] = result1[w];
-                result1[w] = var;
-
-                if(getNumberOfEdgesLinkingTwoGroups(result0, result1) < NM1){
-                    best = getNumberOfEdgesLinkingTwoGroups(result0, result1);
-                    i = k ;
-                    j = w ;
-                }
-                var = result0[k];
-                result0[k] = result1[w];
-                result1[w] = var;
-            }
-            if (best != -1){
-                var2 = result0[i];
-                result0[i] = result1[j];
-                result1[j] = var2;
-            }
-        }
-
-        if(NM1<best){
-            lire = false;
-        }
-        else{
-            lire = true;
-        }
-        count ++;
-/*        if (count > n/8){ // Check if the solution is in the tabu list every 5 iterations
-            sort(result0.begin(), result0.end());
-            // Check if the solution is in the tabu list
-            for (auto &solutionRange : tabuList){
-                if (solutionRange.first >= result0 && solutionRange.second <= result0){
-                    isTabu = true;
-                    break;
-                }
-            }
-            count = 0;
-        }*/
-    }
-    sort(result0.begin(), result0.end());
-    return {result0, result1};
-}
-
-
+// metaheuristic
 vector<vector<int>> Graph::metaheuristic(int iter_max, int nb_fail_max){
-    vector<vector<int>> bestSolution = localHeuristic();
+    vector<vector<int>> constructive = constructiveHeuristic();
+    vector<vector<int>> bestSolution = localHeuristic(constructive);
     int bestCost = getNumberOfEdgesLinkingTwoGroups(bestSolution[0], bestSolution[1]);
 
     // Tabu list for ban groups
@@ -485,6 +421,7 @@ vector<vector<int>> Graph::metaheuristic(int iter_max, int nb_fail_max){
         int currentCost = getNumberOfEdgesLinkingTwoGroups(randomSolution[0], randomSolution[1]);
 
         // Check if the solution is in the tabu list
+        sort(randomSolution[0].begin(), randomSolution[0].end());
         bool isTabu = false;
         for (auto &solutionRange : tabuList){
             if (solutionRange.first >= randomSolution[0] && solutionRange.second <= randomSolution[0]){
@@ -493,11 +430,12 @@ vector<vector<int>> Graph::metaheuristic(int iter_max, int nb_fail_max){
             }
         }
 
-        // Add the solution to the tabu list
+        // If the solution is not in the tabu list, we apply the local search
         if (!isTabu){
-            // Sort the solution
-            vector<vector<int>> optimised_random_solution = localSearchTabu(randomSolution, tabuList, isTabu);
+            vector<vector<int>> optimised_random_solution = localHeuristic(randomSolution);
             // Add the solution to the tabu list
+            // Sort the solution to be able to compare it with the tabu list
+            sort(optimised_random_solution[0].begin(), optimised_random_solution[0].end());
             if (randomSolution[0] < optimised_random_solution[0]) {
                 tabuList.push_back({randomSolution[0], optimised_random_solution[0]});
             } else {
@@ -507,7 +445,7 @@ vector<vector<int>> Graph::metaheuristic(int iter_max, int nb_fail_max){
             currentCost = getNumberOfEdgesLinkingTwoGroups(randomSolution[0], randomSolution[1]);
         }
 
-        if (!isTabu && currentCost < bestCost){
+        if (currentCost < bestCost){
             bestSolution = randomSolution;
             bestCost = currentCost;
             nb_fail = 0;

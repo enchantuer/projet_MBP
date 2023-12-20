@@ -54,15 +54,15 @@ public:
     vector<vector<int>> constructiveHeuristic();
     int getNumberOfEdgesLinkingTwoGroups(vector<int> &group1, vector<int> &group2);
     int getDegree(int v);
+
     bool isEdge(int v, int w);
 
     // Local Search heuristic
-    vector<vector<int>> localHeuristic();
+    vector<vector<int>> localHeuristic(vector<vector<int>> &solution);
 
 
     //Meta-heuristics
     vector<vector<int>> generateRandomSolution();
-    vector<vector<int>> localSearchTabu(vector<vector<int>> &solution, vector<pair<vector<int>, vector<int>>> &tabuList, bool &isTabu);
     vector<vector<int>> metaheuristic(int iter_max, int nbfail_max);
 };
 
