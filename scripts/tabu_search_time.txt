@@ -1,0 +1,39 @@
+# Set separator of data lines and grid to plot
+set datafile separator ";" 
+set grid
+
+# Set names of stuff
+set title "Tabu Search Heuristic: Execution Time vs Complexity"
+set xlabel "number of vertices"
+set ylabel "time in milliseconds"
+
+# Set line style, color, width, blabla
+set style line 1 linecolor rgb '#fff000' linetype 1 linewidth 2
+set style line 2 linecolor rgb '#7f00ff' linetype 1 linewidth 2
+set style line 3 linecolor rgb '#00ff00' linetype 1 linewidth 2
+set style line 4 linecolor rgb '#ff0000' linetype 1 linewidth 2
+
+#### Prepare the function
+f(x) = c * ( x**4 )
+g(x) = d * ( x**4 )
+h(x) = e * ( x**4 )
+
+#### Fit the function to data
+fit f(x) 'csv/tabu_search_0.25_time.csv' via c
+fit g(x) 'csv/tabu_search_0.50_time.csv' via d
+fit h(x) 'csv/tabu_search_0.75_time.csv' via e
+
+# Save value of c to show in the function
+title_f(c) = sprintf("f(n) = c*(n^4), c = %f", c)
+title_g(d) = sprintf("g(n) = d*(n^4), d = %f", d)
+title_h(e) = sprintf("h(n) = e*(n^4), e = %f", e)
+
+# Automatic scaling of axes
+set autoscale xy
+
+#### Plot both data and function (data with points)
+# plot 'csv\tabu_search_0.25_time.csv' title 'p=0.25' with lines linestyle 1, f(x) title title_f(c) with lines linestyle 4
+# plot 'csv\tabu_search_0.50_time.csv' title 'p=0.5' with lines linestyle 2, g(x) title title_g(d) with lines linestyle 4
+# plot 'csv\tabu_search_0.75_time.csv' title 'p=0.75' with lines linestyle 3, h(x) title title_h(e) with lines linestyle 4
+ plot 'csv\tabu_search_0.25_time.csv' title 'p=0.25' with lines linestyle 1, f(x) title title_f(c) with lines linestyle 4, 'csv\tabu_search_0.50_time.csv' title 'p=0.5' with lines linestyle 2, g(x) title title_g(d) with lines linestyle 4, 'csv\tabu_search_0.75_time.csv' title 'p=0.75' with lines linestyle 3, h(x) title title_h(e) with lines linestyle 4
+# plot 'csv\tabu_search_0.25_time.csv' title 'p=0.25' with lines linestyle 1, 'csv\tabu_search_0.50_time.csv' title 'p=0.5' with lines linestyle 2, g(x) title title_g(d) with lines linestyle 4, 'csv\tabu_search_0.75_time.csv' title 'p=0.75' with lines linestyle 3
