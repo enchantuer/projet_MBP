@@ -4,7 +4,7 @@
 
 vector<pair<pair<int,float>,vector<Graph>>> Create_Graphs(int n, vector<float> p, int nb){
     vector<pair<pair<int,float>,vector<Graph>>> VGs;
-    for(int i=2; i<n; i+=2){
+    for(int i=2; i<=n; i+=2){
         for(int j=0; j<p.size(); j++){
             pair<int,float> np = make_pair(i,p[j]);
             vector<Graph> Vg;
@@ -63,7 +63,7 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
                 result = Vg[k].constructiveHeuristic();
                 result = Vg[k].localHeuristic(result);
             }else{
-                result = Vg[k].metaheuristic(500,200);
+                result = Vg[k].metaheuristic(100,20);
             }
             auto stop = high_resolution_clock::now();
             int duration = duration_cast<microseconds>(stop - start).count();
