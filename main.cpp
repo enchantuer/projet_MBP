@@ -9,19 +9,24 @@ int main() {
     int n = 200;     // max size
     vector<float> p = {0.25,0.5,0.75};   // density
     int nb = 10;     // number of test maximum for each n-size Graph of density p
-    // Generate graphs and save them
+
+    // Generate graphs and save them //
     /*vector<pair<pair<int,float>,vector<Graph>>> VGs = Create_Graphs(n,p,nb);
     saveVGS(VGs);*/
     // Load graphs from file
     //vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
-    // Run algorithms
+
+    // Run algorithms //
     //Run_Algos(VGs,28,p,"constructive",10);
     //Run_Algos(VGs,28,p,"local_search",10);
     //Run_Algos(VGs,28,p,"tabu_search",10);
     //Run_Algos(VGs,28,p,"exact",10);
 
-    // Test with one instance
-    Test_With_Instance("test1.in", "exact");
+    // Test with one instance //
+    //Test_With_Instance("test1.in", "exact");
+    //Test_With_Instance("test1.in", "constructive");
+    //Test_With_Instance("test2.in", "local_search");
+    //Test_With_Instance("test3.in", "tabu_search");
 
 
     return 0;

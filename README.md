@@ -10,19 +10,54 @@ To execute the program, use the same name as you use to compile before :
 ```
 ./projet
 ```
-## Where to find the executable
+## Where to put the inputs files 
+You can input files of instances in the directories :
 
-## Where to put the inputs files
-
+- "instances/exact/"
+- "instances/constructive/"
+- "instances/local_search/"
+- "instances/tabu_search/"
 ## Where to find the outputs files
-
+You can output the files at the same place that the test.in
 ## How to use the program
-
-
+### First: 
+If you want, you can create a graph, there is three possibilities. If you want to generate a random graph of probability to have an edge p and n vertices :
+```
+Graph g(n,p);
+```
+If you want to add vertices one by one :
+```
+Graph g(n);
+g.addEdge(0,1);
+```
+And if you want to use a file .in :
+```
+Graph g("../path/graph.in");
+```
+### Secondly:
+If you want to generate data in .csv file, create nb graphs for each probability p and each number of vertices n. If you want to create a random one :
+```
+vector<pair<pair<int,float>,vector<Graph>>> VGs = Create_Graphs(n,p,nb);
+```
+Or by using an existing one :
+```
+vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
+```
+And after, choose an algo ("exact" or "constructive" or "local_search" or "tabu_search") and run it :
+```
+Run_Algos(VGs,n,p,"exact",nb);
+```
+### Thirdly:
+If you want to write a file.out using an instance file.in and an algo ("exact" or "constructive" or "local_search" or "tabu_search") :
+```
+Test_With_Instance("test1.in", "exact");
+```
+___
+## MBP
 Algorithm Project for school. Minimum Bisection Problem
 
 This project is a school project for the Graph courses.
-The goal is to find the minimum bisection of a graph. To do so, we use three type of algorithm:
+The goal is to find the minimum bisection of a graph. To do so, we use three type of algorithm :
 - An exact algorithm
 - A constructive heuristic algorithm
 - A local search heuristic algorithm
