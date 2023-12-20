@@ -1,9 +1,15 @@
 # projet_MBP
 
 ## How to compile
-
+If you want to execute in Debian, first, you need to move to the project folder. And now you can compile the code using :
+```
+g++ -Wall main.cpp src/constructive/constructive.cpp src/exact/exact.cpp src/local_search/local_search.cpp src/tabu_search/tabu_search.cpp src/model/Graph.cpp test/Testing.cpp -o projet 
+```
 ## How to execute
-
+To execute the program, use the same name as you use to compile before :
+```
+./projet
+```
 ## Where to find the executable
 
 ## Where to put the inputs files

@@ -15,13 +15,15 @@ int main() {
     // Load graphs from file
     vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
     // Run algorithms
-    Run_Algos(VGs,28,p,"constructive",10);
-    Run_Algos(VGs,28,p,"local_search",10);
-    Run_Algos(VGs,28,p,"tabu_search",10);
-    Run_Algos(VGs,28,p,"exact",10);
+    //Run_Algos(VGs,28,p,"constructive",10);
+    //Run_Algos(VGs,28,p,"local_search",10);
+    //Run_Algos(VGs,28,p,"tabu_search",10);
+    //Run_Algos(VGs,28,p,"exact",10);
 
     // Test with one instance
-    //Test_With_Instance("../instances/test1.in", "exact");
+    Test_With_Instance("../instances/test1.in", "exact");
+
+    cout<<"goog"<<endl;
 
     return 0;
 }

@@ -1,0 +1,21 @@
+# Set separator of data lines and grid to plot
+set datafile separator ";" 
+set grid
+
+# Set names of stuff
+set title "Tabu Search Heuristic: Result of nb of edges"
+set xlabel "number of vertices"
+set ylabel "number of edges found"
+
+# Set line style, color, width, blabla
+set style line 1 linecolor rgb '#fff000' linetype 1 linewidth 2
+set style line 2 linecolor rgb '#7f00ff' linetype 1 linewidth 2
+set style line 3 linecolor rgb '#00ff00' linetype 1 linewidth 2
+set style line 4 linecolor rgb '#ff0000' linetype 1 linewidth 2  
+
+# Automatic scaling of axes
+set autoscale y
+set xrange [0:24]
+
+#### Plot both data and function (data with points)
+plot 'csv\exact_0.25_nbedge.csv' title 'exact p=0.25' with lines linestyle 4, 'csv\exact_0.50_nbedge.csv' title 'exact p=0.5' with lines linestyle 4, 'csv\exact_0.75_nbedge.csv' title 'exact p=0.75' with lines linestyle 4, 'csv\tabu_search_0.25_nbedge.csv' title 'p=0.25' with lines linestyle 1, 'csv\tabu_search_0.50_nbedge.csv' title 'p=0.5' with lines linestyle 2, 'csv\tabu_search_0.75_nbedge.csv' title 'p=0.75' with lines linestyle 3
