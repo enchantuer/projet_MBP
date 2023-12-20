@@ -1,6 +1,4 @@
 #include "Testing.h"
-#include <iomanip>
-
 
 vector<pair<pair<int,float>,vector<Graph>>> Create_Graphs(int n, vector<float> p, int nb){
     vector<pair<pair<int,float>,vector<Graph>>> VGs;
@@ -18,7 +16,7 @@ vector<pair<pair<int,float>,vector<Graph>>> Create_Graphs(int n, vector<float> p
     return VGs;
 }
 
-void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<float> p , string algo, int nb){
+void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> &VGs, int n, vector<float> p , string algo, int nb){
     if(n%2==1){
         n--;
     }
@@ -56,14 +54,14 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
             vector<vector<int>> result;
             auto start = high_resolution_clock::now();
             if(algo=="exact"){
-                result = Vg[k].exactAlgorithm();
+                result = exactAlgorithm(Vg[k]);
             }else if(algo=="constructive"){
-                result = Vg[k].constructiveHeuristic();
+                result = constructiveHeuristic(Vg[k]);
             }else if(algo=="local_search"){
-                result = Vg[k].constructiveHeuristic();
-                result = Vg[k].localHeuristic(result);
+                result = constructiveHeuristic(Vg[k]);
+                result = localHeuristic(Vg[k], result);
             }else{
-                result = Vg[k].metaheuristic(100,20);
+                result = metaheuristic(Vg[k], 100,20);
             }
             auto stop = high_resolution_clock::now();
             int duration = duration_cast<microseconds>(stop - start).count();
@@ -82,6 +80,41 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> VGs, int n, vector<fl
         filenbedge.close();
         l++;
     }
+}
+
+void writeSolutions(Graph &G, string instancepath, string algo){
+    ofstream file;
+    vector<vector<int>> result;
+    if(algo=="exact"){
+        string file_name = instancepath + "_exact.out";
+        file.open(file_name);
+        result = exactAlgorithm(G);
+    }else if(algo=="constructive"){
+        string file_name = instancepath + "_constructive.out";
+        file.open(file_name);
+        result = constructiveHeuristic(G);
+    }else if(algo=="exact"){
+        string file_name = instancepath + "_local_search.out";
+        file.open(file_name);
+        result = constructiveHeuristic(G);
+        result = localHeuristic(G, result);
+    }else {
+        string file_name = instancepath + "_meta_search.out";
+        file.open(file_name);
+        result = metaheuristic(G, 100, 20);
+    }
+
+    int nbedges = G.getNumberOfEdgesLinkingTwoGroups(result[0], result[1]);
+    file << G.n << " " << nbedges << endl;
+    for(int i=0; i<result[0].size(); i++){
+        file << result[0][i] << " ";
+    }
+    file << endl;
+    for(int i=0; i<result[1].size(); i++){
+        file << result[1][i] << " ";
+    }
+    file << endl;
+    file.close();
 }
 
 void Test_With_Instance(string instancepath,string algo){
@@ -105,5 +138,24 @@ void Test_With_Instance(string instancepath,string algo){
     }
     inputFile.close();
 
-    g.writeSolutions(instancepath,algo);
+    writeSolutions(g, instancepath,algo);
+}
+
+void saveVGS(vector<pair<pair<int,float>,vector<Graph>>> &VGs) {
+    ofstream instance;
+    for (int i = 0; i < VGs.size(); ++i) {
+        for (int j = 0; j < VGs[i].second.size(); ++j) {
+            std::stringstream stream;
+            stream << std::fixed << std::setprecision(2) << VGs[i].first.second;
+            string name = "../instances/new_instances/" + to_string(VGs[i].first.first) + "_" + stream.str() + "_" + to_string(j) + ".in";
+            instance.open(name);
+            instance << VGs[i].second[j].getN() << " " << VGs[i].second[j].getM() << endl;
+            for (int k = 0; k < VGs[i].second[j].getN(); ++k) {
+                for (int v : VGs[i].second[j].successor[k]) {
+                    instance << k << " " << v << "  ";
+                }
+            }
+            instance.close();
+        }
+    }
 }
