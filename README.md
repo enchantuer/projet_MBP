@@ -68,7 +68,7 @@ cd path/to/the/project
 
 And now you can compile the code using :
 ```
-g++ -Wall main.cpp src/constructive/constructive.cpp src/exact/exact.cpp src/local_search/local_search.cpp src/tabu_search/tabu_search.cpp src/model/Graph.cpp test/Testing.cpp -o project_MBP
+g++ -Wall src/main.cpp src/constructive/constructive.cpp src/exact/exact.cpp src/local_search/local_search.cpp src/tabu_search/tabu_search.cpp src/model/Graph.cpp src/test/Testing.cpp -o project_MBP
 ```
 The executable file will be created where you are located, so normally at the root of this project
 ## How to execute
