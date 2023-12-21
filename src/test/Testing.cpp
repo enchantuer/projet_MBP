@@ -24,10 +24,10 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> &VGs, int n, vector<f
         ostringstream stringp;
         stringp << std::fixed << std::setprecision(2) << p[i];
         ofstream filetime;
-        string file_time = "../csv/" + algo + "_" + stringp.str() + "_time.csv";
+        string file_time = "csv/" + algo + "_" + stringp.str() + "_time.csv";
         filetime.open(file_time, ios::trunc);
         ofstream filenbedge;
-        string file_nbedge = "../csv/" + algo + "_" + stringp.str() + "_nbedge.csv";
+        string file_nbedge = "csv/" + algo + "_" + stringp.str() + "_nbedge.csv";
         filenbedge.open(file_nbedge, ios::trunc);
         filetime.close();
         filenbedge.close();
@@ -42,10 +42,10 @@ void Run_Algos(vector<pair<pair<int,float>,vector<Graph>>> &VGs, int n, vector<f
         stringp << std::fixed << std::setprecision(2) << np.second;
 
         ofstream filetime;
-        string file_time = "../csv/" + algo + "_" + stringp.str() + "_time.csv";
+        string file_time = "csv/" + algo + "_" + stringp.str() + "_time.csv";
         filetime.open(file_time,ios::app);
         ofstream filenbedge;
-        string file_nbedge = "../csv/" + algo + "_" + stringp.str() + "_nbedge.csv";
+        string file_nbedge = "csv/" + algo + "_" + stringp.str() + "_nbedge.csv";
         filenbedge.open(file_nbedge,ios::app);
         int moytime = 0;
         int moynbedge = 0;
@@ -121,7 +121,7 @@ void writeSolutions(Graph &G, string instancepath, string algo){
 }
 
 void Test_With_Instance(string instancepath,string algo){
-    instancepath = "../instances/" + algo + "/" + instancepath;
+    instancepath = "instances/" + algo + "/" + instancepath;
     ifstream inputFile(instancepath);
     if (!inputFile.is_open()) {
         return;
@@ -151,7 +151,7 @@ void saveVGS(vector<pair<pair<int,float>,vector<Graph>>> &VGs) {
         for (int j = 0; j < VGs[i].second.size(); ++j) {
             std::stringstream stream;
             stream << std::fixed << std::setprecision(2) << VGs[i].first.second;
-            string name = "../instances/new_instances/" + to_string(VGs[i].first.first) + "_" + stream.str() + "_" + to_string(j) + ".in";
+            string name = "instances/new_instances/" + to_string(VGs[i].first.first) + "_" + stream.str() + "_" + to_string(j) + ".in";
             instance.open(name);
             instance << VGs[i].second[j].getN() << " " << VGs[i].second[j].getM() << endl;
             for (int k = 0; k < VGs[i].second[j].getN(); ++k) {
