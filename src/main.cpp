@@ -1,5 +1,5 @@
 #include "test/Testing.h"
-#include "src/model/Graph.h"
+#include "model/Graph.h"
 
 
 int main() {
@@ -11,10 +11,10 @@ int main() {
     int nb = 10;     // number of test maximum for each n-size Graph of density p
 
     // Generate graphs and save them //
-    /*vector<pair<pair<int,float>,vector<Graph>>> VGs = Create_Graphs(n,p,nb);
-    saveVGS(VGs);*/
-    // Load graphs from file
-    //vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
+    //vector<pair<pair<int,float>,vector<Graph>>> VGs = Create_Graphs(n,p,nb);
+    //saveVGS(VGs);
+    // Load graphs from file //
+    vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
 
     // Run algorithms //
     //Run_Algos(VGs,28,p,"constructive",10);

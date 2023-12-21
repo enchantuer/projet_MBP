@@ -1,8 +1,8 @@
 #ifndef PROJETTEST_TESTING_H
 #define PROJETTEST_TESTING_H
 
-#include "../src/model/Graph.h"
-#include "../src/algo.h"
+#include "../model/Graph.h"
+#include "../algo.h"
 
 #include <chrono>
 #include <iomanip>
