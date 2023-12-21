@@ -14,7 +14,7 @@ int main() {
     //vector<pair<pair<int,float>,vector<Graph>>> VGs = Create_Graphs(n,p,nb);
     //saveVGS(VGs);
     // Load graphs from file //
-    vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
+    // vector<pair<pair<int,float>,vector<Graph>>> VGs = loadGraphs(n, nb, p);
 
     // Run algorithms //
     //Run_Algos(VGs,28,p,"constructive",10);
