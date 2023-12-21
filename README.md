@@ -60,6 +60,7 @@ that contain graphs to use to generate solutions to the MBP. The generated solut
 
 `report` contain the report in pdf format
 ___
+By default, the program will not do anything. You need to change the `main.cpp` file to do what you want according to the instructions in the next section (How to use the program).
 ## How to compile in Debian
 If you want to execute the project in Debian, first, you need to move in your terminal to the project folder using
 ```
